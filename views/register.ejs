@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Регистрация</h1>
+            <p>Создайте аккаунт для персональных курсов валют</p>
+        </div>
+
+        <% if (error) { %>
+            <div class="error">
+                <strong>Ошибка:</strong> <%= error %>
+            </div>
+        <% } %>
+
+        <div class="converter-form">
+            <form action="/register" method="POST">
+                <div class="form-group">
+                    <label for="username">Имя пользователя:</label>
+                    <input type="text" id="username" name="username" required 
+                           placeholder="Придумайте имя пользователя" minlength="3">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Пароль:</label>
+                    <input type="password" id="password" name="password" required 
+                           placeholder="Придумайте пароль" minlength="6">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Подтвердите пароль:</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required 
+                           placeholder="Повторите пароль">
+                </div>
+
+                <button type="submit" class="btn">Зарегистрироваться</button>
+            </form>
+
+            <div style="text-align: center; margin-top: 1rem;">
+                <p>Уже есть аккаунт? <a href="/login">Войдите</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

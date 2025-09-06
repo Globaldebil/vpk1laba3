@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Редактор курсов валют</h1>
+            <p>Управление курсами валют относительно USD</p>
+        </div>
+
+        <div class="nav">
+            <a href="/" class="nav-link">Конвертер</a>
+            <a href="/rates" class="nav-link">Курсы валют</a>
+            <a href="/admin/rates" class="nav-link">Редактор</a>
+            <form action="/logout" method="POST" style="display: inline;">
+                <button type="submit" class="nav-link" style="background: none; border: none; cursor: pointer;">
+                Выйти (<%= user.username %>)
+                </button>
+            </form>
+        </div>
+
+        <% if (message) { %>
+            <div class="<%= message.includes('Ошибка') ? 'error' : 'result' %>">
+                <%= message %>
+            </div>
+        <% } %>
+
+        <!-- Форма для обновления существующих курсов -->
+        <div class="converter-form">
+            <h2>Обновить курс валюты</h2>
+            <form action="/admin/rates/update" method="POST">
+                <div class="form-group">
+                    <label for="currency">Валюта:</label>
+                    <select id="currency" name="currency" required>
+                        <option value="">Выберите валюту</option>
+                        <% Object.keys(rates).forEach(currency => { %>
+                            <option value="<%= currency %>"><%= currency %></option>
+                        <% }); %>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="rate">Новый курс к USD:</label>
+                    <input type="number" id="rate" name="rate" step="0.0001" min="0.0001" required 
+                           placeholder="Введите новый курс">
+                </div>
+
+                <button type="submit" class="btn">Обновить курс</button>
+            </form>
+        </div>
+
+        <!-- Форма для добавления новой валюты -->
+        <div class="converter-form">
+            <h2>Добавить новую валюту</h2>
+            <form action="/admin/rates/add" method="POST">
+                <div class="form-group">
+                    <label for="newCurrency">Код валюты:</label>
+                    <input type="text" id="newCurrency" name="newCurrency" required 
+                           placeholder="Например: BRL" maxlength="3" pattern="[A-Z]{3}" 
+                           title="3 заглавные латинские буквы">
+                </div>
+
+                <div class="form-group">
+                    <label for="newRate">Курс к USD:</label>
+                    <input type="number" id="newRate" name="newRate" step="0.0001" min="0.0001" required 
+                           placeholder="Введите курс">
+                </div>
+
+                <button type="submit" class="btn">Добавить валюту</button>
+            </form>
+        </div>
+
+        <!-- Форма для удаления валюты -->
+        <div class="converter-form">
+            <h2>Удалить валюту</h2>
+            <form action="/admin/rates/delete" method="POST">
+                <div class="form-group">
+                    <label for="currencyToDelete">Валюта для удаления:</label>
+                    <select id="currencyToDelete" name="currencyToDelete" required>
+                        <option value="">Выберите валюту</option>
+                        <% Object.keys(rates).forEach(currency => { %>
+                            <% if (currency !== 'USD') { %>
+                                <option value="<%= currency %>"><%= currency %></option>
+                            <% } %>
+                        <% }); %>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-danger">Удалить валюту</button>
+            </form>
+        </div>
+
+        <!-- Текущие курсы -->
+        <div class="converter-form">
+            <h2>Текущие курсы валют</h2>
+            <table class="rates-table">
+                <thead>
+                    <tr>
+                        <th>Код валюты</th>
+                        <th>Курс к USD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% Object.entries(rates).forEach(([currency, rate]) => { %>
+                        <tr>
+                            <td><%= currency %></td>
+                            <td><%= rate.toFixed(4) %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

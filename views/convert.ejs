@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результат конвертации</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Результат конвертации</h1>
+        </div>
+
+        <div class="nav">
+            <a href="/" class="nav-link">Конвертер</a>
+            <a href="/rates" class="nav-link">Курсы валют</a>
+            <a href="/admin/rates" class="nav-link">Редактор</a>
+            <form action="/logout" method="POST" style="display: inline;">
+                <button type="submit" class="nav-link" style="background: none; border: none; cursor: pointer;">
+                Выйти (<%= user.username %>)
+                </button>
+            </form>
+        </div>
+
+        <% if (error) { %>
+            <div class="error">
+                <strong>Ошибка:</strong> <%= error %>
+            </div>
+        <% } %>
+
+        <% if (success) { %>
+            <div class="result">
+                <h3>Результат конвертации:</h3>
+                <div class="result-amount">
+                    <%= amount %> <%= fromCurrency %> = <%= result %> <%= toCurrency %>
+                </div>
+            </div>
+        <% } %>
+
+        <div class="converter-form">
+            <form action="/convert" method="POST">
+                <div class="form-group">
+                    <label for="amount">Сумма:</label>
+                    <input type="number" id="amount" name="amount" step="0.01" min="0" required 
+                           value="<%= typeof amount !== 'undefined' ? amount : '' %>">
+                </div>
+
+                <div class="form-group">
+                    <label for="fromCurrency">Из валюты:</label>
+                    <select id="fromCurrency" name="fromCurrency" required>
+                        <option value="">Выберите валюту</option>
+                        <% currencies.forEach(currency => { %>
+                            <option value="<%= currency %>" 
+                                    <%= (typeof fromCurrency !== 'undefined' && fromCurrency === currency) ? 'selected' : '' %>>
+                                <%= currency %>
+                            </option>
+                        <% }); %>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="toCurrency">В валюту:</label>
+                    <select id="toCurrency" name="toCurrency" required>
+                        <option value="">Выберите валюту</option>
+                        <% currencies.forEach(currency => { %>
+                            <option value="<%= currency %>" 
+                                    <%= (typeof toCurrency !== 'undefined' && toCurrency === currency) ? 'selected' : '' %>>
+                                <%= currency %>
+                            </option>
+                        <% }); %>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn">Конвертировать</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+[
+  {
+    "id": "5ea8624a-381a-4645-9da7-d3309bbfb9c9",
+    "username": "Юрий",
+    "password": "$2b$10$s/Hd8NiMVragFSJZkwnxCeh8fRV86dB.xyEcDImLX6OYc/lVKbHKG",
+    "personalRates": {
+      "USD": 1,
+      "EUR": 1234,
+      "RUB": 80,
+      "CNY": 7.14
+    }
+  }
+]

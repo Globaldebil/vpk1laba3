@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Курсы валют</h1>
+            <p>Актуальные курсы относительно USD</p>
+        </div>
+
+        <div class="nav">
+            <a href="/" class="nav-link">Конвертер</a>
+            <a href="/rates" class="nav-link">Курсы валют</a>
+            <a href="/admin/rates" class="nav-link">Редактор</a>
+            <form action="/logout" method="POST" style="display: inline;">
+                <button type="submit" class="nav-link" style="background: none; border: none; cursor: pointer;">
+                Выйти (<%= user.username %>)
+                </button>
+            </form>
+        </div>
+
+        <table class="rates-table">
+            <thead>
+                <tr>
+                    <th>Код валюты</th>
+                    <th>Курс к USD</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% Object.entries(rates).forEach(([currency, rate]) => { %>
+                    <tr>
+                        <td><%= currency %></td>
+                        <td><%= rate.toFixed(4) %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
